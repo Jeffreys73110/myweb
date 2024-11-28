@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>AES</title>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script> -->
+	<script src="lib/crypto-js.min.js"></script>
+
+
+	<script>
+		function encrypt() {
+			var encrypted = CryptoJS.AES.encrypt(
+				document.getElementById("text").value,
+				document.getElementById("passphrase").value,
+				{ mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+			).toString();
+			document.getElementById("CryptedValue").innerHTML = encrypted;
+			// document.getElementById("decrypted").innerHTML = "";
+		}
+
+		function decrypt() {
+			var decrypted = CryptoJS.AES.decrypt(
+				document.getElementById("CryptedValue").innerHTML,
+				document.getElementById("passphrase").value
+			).toString(CryptoJS.enc.Utf8);
+			// document.getElementById("decrypted").innerHTML = decrypted;
+			document.getElementById("CryptedValue").innerHTML = decrypted;
+		}
+	</script>
+</head>
+
+<body>
+	<h1>This is a Heading</h1>
+	<br />Data to decrypt:
+	<input id="text" type="text" placeholder="Enter text to decrypt" />
+	<br />passphrase: <input id="passphrase" type="password" value="" />
+	<br /><br />
+	<button onclick="encrypt()">encrypt</button>
+	<button onclick="decrypt()">decrypt</button>
+	<br /><br />
+	Crypted Value:<br /><span id="CryptedValue"></span>
+
+
+</body>
+
+</html>
