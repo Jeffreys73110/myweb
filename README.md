@@ -4,3 +4,4 @@
   - example 
     - https://jeffreys73110.github.io/myweb/tools/js_aes/aes.html
     - https://jeffreys73110.github.io/myweb/test/intent_test.html
+- the pushed web will be updated whitin one minute
