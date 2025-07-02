@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Intent URL Test</title>
+</head>
+<body>
+  <h1>Test Android Intent URL Support</h1>
+
+  <p>
+    Tap the link below to test if this device/browser supports <code>intent://</code> URLs.
+  </p>
+
+  <a href="intent://example.com#Intent;scheme=http;end">
+    ➤ Test intent:// link
+  </a>
+
+  <p id="note" style="margin-top: 20px; color: gray;">
+    If the link does nothing or shows an error like <code>net::ERR_UNKNOWN_URL_SCHEME</code>,
+    your browser does not support <code>intent://</code>.
+  </p>
+
+  <script>
+    // Optional: try auto-redirect after a delay
+    // setTimeout(() => {
+    //   window.location.href = "intent://example.com#Intent;scheme=http;end";
+    // }, 3000);
+  </script>
+</body>
+</html>
