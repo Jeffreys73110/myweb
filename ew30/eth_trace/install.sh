@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# usage:
+# curl -sL "https://jeffreys73110.github.io/myweb/ew30/eth_trace/install.sh" | sh
+
 
 WEB_SERVER="https://jeffreys73110.github.io/myweb/ew30/eth_trace/"
 

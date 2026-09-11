@@ -1,8 +1,8 @@
-#!/bin/bin/sh
+#!/bin/sh
 
 LOG_FILE="/www/html/eth_trace.log"
 
-# 設定訊號捕獲，讓腳本接到停止指令時能聯即乾淨退出
+# Setup signal trap for clean exit
 RUNNING=1
 trap 'RUNNING=0' TERM INT
 
@@ -27,9 +27,18 @@ get_file_val() {
   fi
 }
 
-# 若日誌檔不存在，則寫入包含新欄位的 CSV 標頭
+# If log file does not exist, initialize with CSV header (including index)
 if [ ! -f "$LOG_FILE" ]; then
-  echo "timestamp,uptime,eth0_speed,eth0_down_count,eth0_up_count,curr_snr_a,curr_snr_b,curr_snr_c,curr_snr_d,min_snr_a,min_snr_b,min_snr_c,min_snr_d,eth_mnt_proc,eth_mnt_resync,eth_mnt_100m" > "$LOG_FILE"
+  echo "index,timestamp,uptime,eth0_speed,eth0_down_count,eth0_up_count,curr_snr_a,curr_snr_b,curr_snr_c,curr_snr_d,min_snr_a,min_snr_b,min_snr_c,min_snr_d,eth_mnt_proc,eth_mnt_resync,eth_mnt_100m" > "$LOG_FILE"
+  INDEX=1
+else
+  # Calculate starting index based on existing line count (excluding header)
+  TOTAL_LINES=$(wc -l < "$LOG_FILE" 2>/dev/null || echo 0)
+  if [ "$TOTAL_LINES" -gt 0 ]; then
+    INDEX=$TOTAL_LINES
+  else
+    INDEX=1
+  fi
 fi
 
 while [ "$RUNNING" -eq 1 ]; do
@@ -54,7 +63,9 @@ while [ "$RUNNING" -eq 1 ]; do
   ETH_MNT_RESYNC=$(get_file_val "/tmp/.eth_mnt_resync")
   ETH_MNT_100M=$(get_file_val "/tmp/.eth_mnt_100m")
 
-  echo "${TIMESTAMP},${UPTIME},${ETH0_SPEED},${ETH0_DOWN},${ETH0_UP},${CURR_SNR_A},${CURR_SNR_B},${CURR_SNR_C},${CURR_SNR_D},${MIN_SNR_A},${MIN_SNR_B},${MIN_SNR_C},${MIN_SNR_D},${ETH_MNT_PROC},${ETH_MNT_RESYNC},${ETH_MNT_100M}" >> "$LOG_FILE"
+  echo "${INDEX},${TIMESTAMP},${UPTIME},${ETH0_SPEED},${ETH0_DOWN},${ETH0_UP},${CURR_SNR_A},${CURR_SNR_B},${CURR_SNR_C},${CURR_SNR_D},${MIN_SNR_A},${MIN_SNR_B},${MIN_SNR_C},${MIN_SNR_D},${ETH_MNT_PROC},${ETH_MNT_RESYNC},${ETH_MNT_100M}" >> "$LOG_FILE"
+
+  INDEX=$((INDEX + 1))
 
   sleep 1 &
   wait $!
