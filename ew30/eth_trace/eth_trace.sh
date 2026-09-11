@@ -27,19 +27,14 @@ get_file_val() {
   fi
 }
 
-# If log file does not exist, initialize with CSV header (including index)
-if [ ! -f "$LOG_FILE" ]; then
-  echo "index,timestamp,uptime,eth0_speed,eth0_down_count,eth0_up_count,curr_snr_a,curr_snr_b,curr_snr_c,curr_snr_d,min_snr_a,min_snr_b,min_snr_c,min_snr_d,eth_mnt_proc,eth_mnt_resync,eth_mnt_100m" > "$LOG_FILE"
-  INDEX=1
-else
-  # Calculate starting index based on existing line count (excluding header)
-  TOTAL_LINES=$(wc -l < "$LOG_FILE" 2>/dev/null || echo 0)
-  if [ "$TOTAL_LINES" -gt 0 ]; then
-    INDEX=$TOTAL_LINES
-  else
-    INDEX=1
-  fi
+# Remove old log file before writing new records
+if [ -f "$LOG_FILE" ]; then
+  rm -f "$LOG_FILE"
 fi
+
+# Initialize fresh log file with CSV header
+echo "index,timestamp,uptime,eth0_speed,eth0_down_count,eth0_up_count,curr_snr_a,curr_snr_b,curr_snr_c,curr_snr_d,min_snr_a,min_snr_b,min_snr_c,min_snr_d,eth_mnt_proc,eth_mnt_resync,eth_mnt_100m" > "$LOG_FILE"
+INDEX=1
 
 while [ "$RUNNING" -eq 1 ]; do
   TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
