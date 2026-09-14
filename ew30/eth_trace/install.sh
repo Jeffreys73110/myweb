@@ -24,6 +24,6 @@ curl -sL $WEB_SERVER/eth_trace -o /etc/init.d/eth_trace
 curl -sL $WEB_SERVER/eth_trace.sh -o /usr/lib/eth_trace.sh
 chmod +x /etc/init.d/eth_trace
 chmod +x /usr/lib/eth_trace.sh
-ln -s /tmp/eth_trace.log eth_trace.log
+rm -f /www/html/eth_trace.log && ln -s /tmp/eth_trace.log /www/html/eth_trace.log
 /etc/init.d/eth_trace enable
 /etc/init.d/eth_trace start
