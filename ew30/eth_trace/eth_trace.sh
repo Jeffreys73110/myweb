@@ -1,6 +1,6 @@
 #!/bin/sh
 
-LOG_FILE="/www/html/eth_trace.log"
+LOG_FILE="/tmp/eth_trace.log"
 
 # Setup signal trap for clean exit
 RUNNING=1
